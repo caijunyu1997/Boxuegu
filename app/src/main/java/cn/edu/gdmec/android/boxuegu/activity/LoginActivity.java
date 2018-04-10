@@ -54,8 +54,8 @@ public class LoginActivity extends AppCompatActivity {
         tv_find_psw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(LoginActivity.this,FindPswActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(LoginActivity.this,ActivityFindPswActivity.class);
+                startActivity(intent);
             }
         });
         btn_login.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                     data.putExtra("userName",userName);
                     setResult(RESULT_OK,data);
                     LoginActivity.this.finish();
+                    return;
                 }else if (!TextUtils.isEmpty(spPsw) && !md5Psw.equals(spPsw)){
                     Toast.makeText(LoginActivity.this,"输入的用户名和密码不一致",Toast.LENGTH_LONG).show();
                 }else {

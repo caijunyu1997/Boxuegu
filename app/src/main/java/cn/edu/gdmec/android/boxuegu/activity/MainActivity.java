@@ -1,22 +1,26 @@
 package cn.edu.gdmec.android.boxuegu.activity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import cn.edu.gdmec.android.boxuegu.Fragment.CourseFragment;
 import cn.edu.gdmec.android.boxuegu.Fragment.ExercisesFragment;
-import cn.edu.gdmec.android.boxuegu.Fragment.MyinfoFragment;
+import cn.edu.gdmec.android.boxuegu.Fragment.FragmentMyinfoFragment;
 import cn.edu.gdmec.android.boxuegu.R;
+import cn.edu.gdmec.android.boxuegu.utils.AnalysisUtils;
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
 
@@ -38,20 +42,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivityForResult(intent, 1);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setMain();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (data != null) {
-            boolean isLogin = data.getBooleanExtra("isLogin", false);
-            String userName = data.getStringExtra("userName");
-            if (isLogin) {
-            }
-        }
     }
 
     private void initView() {
@@ -128,14 +120,49 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 setSelectStatus(1);
                 break;
             case R.id.bottom_bar_myinfo_btn:
-                getSupportFragmentManager().beginTransaction().add(R.id.main_body,new MyinfoFragment()).commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.main_body,new FragmentMyinfoFragment()).commit();
                 setSelectStatus(2);
                 break;
         }
     }
 
     private void setMain(){
-        this.getSupportFragmentManager().beginTransaction().add(R.id.main_body,new MyinfoFragment()).commit();
+        this.getSupportFragmentManager().beginTransaction().add(R.id.main_body,new FragmentMyinfoFragment()).commit();
         setSelectStatus(2);
+    }
+
+    @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+        super.onActivityReenter(resultCode, data);
+        if(data!=null){
+            boolean isLogin = data.getBooleanExtra("isLogin",false);
+            if (isLogin){
+                getSupportFragmentManager().beginTransaction().add(R.id.main_body,new FragmentMyinfoFragment()).commit();
+                setSelectStatus(0);
+            }else{
+                getSupportFragmentManager().beginTransaction().add(R.id.main_body,new FragmentMyinfoFragment()).commit();
+                setSelectStatus(2);
+            }
+        }
+    }
+
+    protected long exitTime;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
+            if ((System.currentTimeMillis() - exitTime) > 2000){
+                Toast.makeText(MainActivity.this, "再按一次退出博学谷", Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            }else{
+                this.finish();
+                if (AnalysisUtils.readLoginStatus(this)){
+                    AnalysisUtils.clearLoginStatus(this);
+                }
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
