@@ -16,9 +16,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import cn.edu.gdmec.android.boxuegu.Fragment.CourseFragment;
-import cn.edu.gdmec.android.boxuegu.Fragment.ExercisesFragment;
-import cn.edu.gdmec.android.boxuegu.Fragment.FragmentMyinfoFragment;
+import cn.edu.gdmec.android.boxuegu.fragment.CourseFragment;
+import cn.edu.gdmec.android.boxuegu.fragment.ExercisesFragment;
+import cn.edu.gdmec.android.boxuegu.fragment.FragmentMyinfoFragment;
 import cn.edu.gdmec.android.boxuegu.R;
 import cn.edu.gdmec.android.boxuegu.utils.AnalysisUtils;
 
@@ -112,39 +112,38 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bottom_bar_course_btn:
-                getSupportFragmentManager().beginTransaction().add(R.id.main_body,new CourseFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_body,new CourseFragment()).commit();
                 setSelectStatus(0);
                 break;
             case R.id.bottom_bar_exercises_btn:
-                getSupportFragmentManager().beginTransaction().add(R.id.main_body,new ExercisesFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_body,new ExercisesFragment()).commit();
                 setSelectStatus(1);
                 break;
             case R.id.bottom_bar_myinfo_btn:
-                getSupportFragmentManager().beginTransaction().add(R.id.main_body,new FragmentMyinfoFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_body,new FragmentMyinfoFragment()).commit();
                 setSelectStatus(2);
                 break;
         }
     }
 
     private void setMain(){
-        this.getSupportFragmentManager().beginTransaction().add(R.id.main_body,new FragmentMyinfoFragment()).commit();
+        this.getSupportFragmentManager().beginTransaction().replace(R.id.main_body,new FragmentMyinfoFragment()).commit();
         setSelectStatus(2);
     }
 
     @Override
-    public void onActivityReenter(int resultCode, Intent data) {
-        super.onActivityReenter(resultCode, data);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if(data!=null){
             boolean isLogin = data.getBooleanExtra("isLogin",false);
             if (isLogin){
-                getSupportFragmentManager().beginTransaction().add(R.id.main_body,new FragmentMyinfoFragment()).commit();
                 setSelectStatus(0);
             }else{
-                getSupportFragmentManager().beginTransaction().add(R.id.main_body,new FragmentMyinfoFragment()).commit();
                 setSelectStatus(2);
             }
         }
     }
+
 
     protected long exitTime;
 

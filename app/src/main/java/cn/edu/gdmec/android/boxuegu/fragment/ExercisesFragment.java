@@ -1,4 +1,4 @@
-package cn.edu.gdmec.android.boxuegu.Fragment;
+package cn.edu.gdmec.android.boxuegu.fragment;
 
 import android.support.v4.app.Fragment;
 import android.view.View;

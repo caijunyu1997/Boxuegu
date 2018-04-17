@@ -1,4 +1,4 @@
-package cn.edu.gdmec.android.boxuegu.Fragment;
+package cn.edu.gdmec.android.boxuegu.fragment;
 
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -9,13 +9,13 @@ import android.os.Bundle;
 import cn.edu.gdmec.android.boxuegu.R;
 
 
-public class CourseFragment extends Fragment  {
+public class MyinfoFragment extends Fragment  {
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_course, null);
+        return inflater.inflate(R.layout.fragment_myinfo, null);
     }
 
     @Override
