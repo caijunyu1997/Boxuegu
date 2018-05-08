@@ -137,10 +137,16 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         if(data!=null){
             boolean isLogin = data.getBooleanExtra("isLogin",false);
             if (isLogin){
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_body,new CourseFragment()).commit();
                 setSelectStatus(0);
-            }else{
+            }else {
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_body,new FragmentMyinfoFragment()).commit();
                 setSelectStatus(2);
             }
+        }
+        if (requestCode==000){
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_body,new ExercisesFragment()).commit();
+            setSelectStatus(1);
         }
     }
 
